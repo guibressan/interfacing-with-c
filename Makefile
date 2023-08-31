@@ -11,7 +11,8 @@ SIMPLE_ADDER_TEST_ALL_SRC := \
 SIMPLE_ADDER_TEST_ALL_OBJ := \
 	$(patsubst %.c, %.o, $(SIMPLE_ADDER_TEST_ALL_SRC)) \
 	$(SIMPLE_ADDER_ALL_OBJ)
-SIMPLE_ADDER_TEST_ALL_BIN := testrunner
+SIMPLE_ADDER_TEST_ALL_BIN := \
+	simple-adder/test/testrunner
 
 .PHONY: all clean
 
@@ -26,19 +27,20 @@ simple-adder/src/%.c: $(SIMPLE_ADDER_ALL_HEADER)
 simple-adder-test: $(SIMPLE_ADDER_TEST_ALL_BIN)
 
 $(SIMPLE_ADDER_TEST_ALL_BIN): $(SIMPLE_ADDER_TEST_ALL_OBJ)
-	$(CC) -o $@: $^
+	$(CC) -o $@ $^
 
 # Interfacing With C Section
 interfacing-with-c: FORCE
-	@cd interfacing-with-c
-	@cargo build
-	@cd - 1>/dev/null
+	cargo build --package interfacing-with-c 
 
 %.o: %.c 
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 clean:
 	rm -rf simple-adder/src/*.o
+	rm -rf simple-adder/test/*.o
 	rm -rf simple-adder/test/testrunner
-	rm -rf interfacing-with-c/target
+	rm -rf target
+
+FORCE:
 
