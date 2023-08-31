@@ -1,0 +1,4 @@
+[workspace]
+members = [
+  "interfacing-with-c",
+]
